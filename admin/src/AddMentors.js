@@ -18,84 +18,76 @@ export class AddMentors extends React.Component {
         }else {
             Firebase.app(); // if already initialized, use that one
         }
-        this.usersRef = Firebase.firestore().collection('mentors');
-        this.mentors = []
+        this.mentorRef = Firebase.firestore().collection('mentors');
+        this.mentors = [];
         this.state = {
-            developers: []
+            displayName: "",
+            email: "",
+            password: ""
         };
 
-    }
+    };
 
     componentDidMount() {
-        console.log("umm tf is this called?", this.mentors);
-
         this.getUserData();
-        console.log("umm tf is this called?", this.mentors);
     }
 
-    // componentDidUpdate(prevProps, prevState) {
-    //   if (prevState !== this.state) {
-    //     this.getUserData();
-    //   }
-    // }
-
-    writeUserData = async (displayName, email, password) => {
-        let newUser = {
+    writeMentorData = async (displayName, email, password) => {
+        let newMentor = {
             displayName: displayName,
             email: email,
             password: password
-        }
-        let newUserDocRef = await this.usersRef.add(newUser);
-        // this.usersRef
-        //   .add(this.state);
-        let key = newUserDocRef.id;
-        newUser.key = key;
-        this.mentors.push(newUser);
-        this.setState({developers: newUser});
-        console.log(newUserDocRef);
+        };
+        let newMentorDocRef = await this.mentorRef.add(newMentor);
+        //newMentor.key = newMentorDocRef.id;
+        return newMentor
     };
 
     getUserData = async () => {
         // let ref = this.usersRef.get();
-        let querySnap = await this.usersRef.get();
+        let querySnap = await this.mentorRef.get();
         querySnap.forEach(qDocSnap => {
             let key = qDocSnap.id;
             let data = qDocSnap.data();
             data.key = key;
             this.mentors.push(data);
-            this.setState({developers: data});
-        })
+            //this.setState({developers: data});
+        });
         console.log("getuser data", this.mentors);
-
-        // ref.on("value", snapshot => {
-        //   const state = snapshot.val();
-        //   this.setState(state);
-        // });
     };
 
     handleSubmit = event => {
         event.preventDefault();
-        let email = this.refs.email.value;
-        let password = this.refs.password.value;
-        let displayName = this.refs.displayName.value;
+        let displayName = this.state.displayName;
+        let email = this.state.email;
+        let password = this.state.password;
 
-        this.writeUserData(displayName, email, password);
+
+        this.writeMentorData(displayName, email, password);
         console.log("submitted", displayName, email, password);
-    }
 
-    removeData = developer => {
-        const { developers } = this.state;
-        const newState = developers.filter(data => {
-            return data.displayName !== developer.displayName;
+        this.setState({
+            displayName: "",
+            email: "",
+            password: ""
         });
-        this.setState({ developers: newState });
     };
 
-    updateData = developer => {
-        this.refs.displayName.value = developer.displayName;
-        this.refs.email.value = developer.email;
-        this.refs.password.value = developer.password;
+    handleChange = event => {
+        event.preventDefault();
+        let target = event.target;
+        let value = target.value;
+        let name = target.name;
+
+        console.log(value);
+        console.log(name);
+
+        this.setState(
+            {
+                [name]: value
+            });
     };
+
 
     render() {
         const { developers } = this.state;
@@ -112,30 +104,17 @@ export class AddMentors extends React.Component {
                     </div>
                     <div className="row">
                         <div className="col-xl-12">
-                            {this.mentors.map(developer => (
+                            {this.mentors.map(mentor => (
                                 <>
                                     <div
                                         //key not needed with react.fragment
-                                        key={developer.displayName}
+                                        key={mentor.displayName}
                                         className="card float-left"
                                         style={{ width: "18rem", marginRight: "1rem" }}
                                     >
                                         <div className="card-body">
-                                            <h5 className="card-title" >Name: {developer.displayName}</h5>
-                                            <h5 className="card-title">Email: {developer.email}</h5>
-                                            {/*<p className="card-text">{developer.password}</p>*/}
-                                            {/* <button
-                                                onClick={() => this.removeData(developer)}
-                                                className="btn btn-link"
-                                            >
-                                                Delete
-                                            </button>
-                                            <button
-                                                onClick={() => this.updateData(developer)}
-                                                className="btn btn-link"
-                                            >
-                                                Edit
-                                            </button>*/}
+                                            <h5 className="card-title" >Name: {mentor.displayName}</h5>
+                                            <h5 className="card-title">Email: {mentor.email}</h5>
                                         </div>
                                     </div>
                                 </>
@@ -150,8 +129,11 @@ export class AddMentors extends React.Component {
                                     <div className="form-group col-md-6">
                                         <label>Name</label>
                                         <input
+                                            name="displayName"
                                             type="text"
-                                            ref="displayName"
+                                            value={this.state.displayName}
+                                            ref={this.state.displayName}
+                                            onChange={this.handleChange}
                                             className="form-control"
                                             placeholder="Name"
                                         />
@@ -159,8 +141,11 @@ export class AddMentors extends React.Component {
                                     <div className="form-group col-md-6">
                                         <label>Email</label>
                                         <input
+                                            name="email"
                                             type="text"
-                                            ref="email"
+                                            value={this.state.email}
+                                            ref={this.state.email}
+                                            onChange={this.handleChange}
                                             className="form-control"
                                             placeholder="Email"
                                         />
@@ -168,8 +153,11 @@ export class AddMentors extends React.Component {
                                     <div className="form-group col-md-6">
                                         <label>Password</label>
                                         <input
+                                            name="password"
                                             type="text"
-                                            ref="password"
+                                            value={this.state.password}
+                                            ref={this.state.password}
+                                            onChange={this.handleChange}
                                             className="form-control"
                                             placeholder="Password"
                                         />

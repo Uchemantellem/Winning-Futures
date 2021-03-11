@@ -58,7 +58,7 @@ export class AddStudent extends React.Component {
         let session = this.state.session;
         let selectedMentor = this.state.selectedMentor;
 
-        this.writeStudentData(firstName, lastName, school, session, selectedMentor)
+        this.writeStudentData(firstName, lastName, school, session, selectedMentor);
         console.log("Submitted", firstName, lastName, school, session, selectedMentor);
 
         this.setState({
