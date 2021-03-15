@@ -19,149 +19,52 @@ export class Students extends React.Component {
    }else {
       Firebase.app(); // if already initialized, use that one
    }
-    this.usersRef = Firebase.firestore().collection('mentors');
-    this.mentors = [];
-    console.log("helloo mentors", this.mentors)
-    this.getmentors();
+    this.mentorsRef = Firebase.firestore().collection('mentors');
+    this.studentsRef = Firebase.firestore().collection('students');
+
+    // TODO: Find a better way to handle this w/ the getStudents function
     this.students = [];
     this.state = {
-      developers: []
+      students: []
     };
 
   }
 
   componentDidMount() {
-    console.log("umm tf is this called?", this.students);
-
-    this.getUserData();
-    console.log("umm tf is this called?", this.students);
-  }
-
-  // componentDidUpdate(prevProps, prevState) {
-  //   if (prevState !== this.state) {
-  //     this.getUserData();
-  //   }
-  // }
-  getmentors = async () => {
-    // let ref = this.usersRef.get();
-    let querySnap = await this.usersRef.get();
-    querySnap.forEach(qDocSnap => {
-        let key = qDocSnap.id;
-        let data = qDocSnap.data();
-        data.key = key;
-        this.mentors.push(data);
-    });
-  }
-
-  writeUserData = async (name, school, session, mentor) => {
-    var sublistRef = this.usersRef;
-    let thementor = this.mentors.filter(name => name.displayName == mentor);
-    console.log("wtftttt", thementor[0].key)
-    let newUser = {
-      name: name,
-      school: school,
-      session: session,
-      mentor: mentor
-    }
-    console.log("students", this.students)
-
-    sublistRef = await this.usersRef.doc(thementor[0].key);
-    console.log("new student doc", thementor.key);
-
-
-    console.log("hello mentor writeuserdata", thementor)
-    let newUserDocRef = await sublistRef.collection("students").add(newUser);
-    let key = newUserDocRef.id;
-    newUser.key = key;
-    // this.students.push(newUser);
-    this.setState({developers: newUser});
-    console.log(newUserDocRef);
+    this.getStudents();
   };
 
-  getUserData = async () => {
-    // let ref = this.usersRef.get();
-    console.log("menotrs", this.mentors);
-    let querySnap = await this.usersRef.get();
-    let keys = []
+  getMentorByKey = async (mentorKey) => {
+    let mentorRef = await this.mentorsRef.doc(mentorKey);
+
+    if (!mentorRef.exists) {
+      console.log("No such mentor!");
+      return {}
+    } else {
+      console.log("Found a mentor");
+      let mentor = mentorRef.data();
+      return mentor;
+    };
+  }
+
+  getStudents = async () => {
+    let querySnap = await this.studentsRef.get();
     querySnap.forEach(qDocSnap => {
-      // console.log("each", this.userRef.doc(qDocSnap.id).collection("students").get())
-      let key = qDocSnap.id;
-      keys.push(key);
-      // let sublist = await this.usersRef.doc(qDocSnap.id).collection("students").get();
-      // console.log("subb", sublist);
+      let data = qDocSnap.data();
+      data.mentor = this.getMentorByKey(data.mentorKey); // TODO: Get this working
+      this.students.push(data);
+      console.log(data);
     })
-    for (var i = 0; i < keys.length; i++) {
-      // console.log("key,", keys[i])
-      let sublist = await this.usersRef.doc(keys[i]).collection("students").get()
-      sublist.forEach(qDocSnap => {
-        let data = qDocSnap.data();
-        let key = qDocSnap.id;
-        data.key = key;
-        this.students.push(data);
-        this.setState({developers: data});
-      })
-      // console.log("subb",sublist)
-    }
-      // let data = qDocSnap.data();
-
-    // })
-    // console.log("getuser data", this.students);
-
-  };
-
-  handleSubmit = event => {
-    event.preventDefault();
-    let name = this.refs.name.value;
-    let school = this.refs.school.value;
-    let session = this.refs.session.value;
-    let mentor = this.refs.mentor.value;
-    let uid = this.refs.uid.value;
-
-    if (uid && name && school) {
-      // const { developers } = this.state;
-      const devIndex = this.students.findIndex(data => {
-        return data.uid === uid;
-      });
-      this.students[devIndex].name = name;
-      this.students[devIndex].school = school;
-      this.students[devIndex].session = session;
-      this.students[devIndex].mentor = mentor;
-      this.setState({ developers: this.students });
-    } else if (name && school) {
-      const uid = new Date().getTime().toString();
-      this.writeUserData(name, school, session, mentor, uid);
-      console.log("submitted", name, school, session, mentor, uid);
-      // const { developers } = this.state;
-      // this.students.push({ uid, name, role });
-      // this.setState({ developers: this.students });
-    }
-
-    this.refs.name.value = "";
-    this.refs.school.value = "";
-    this.refs.session.value = "";
-    this.refs.mentor.value = "";
-    this.refs.uid.value = "";
-
-
-  };
-
-  removeData = developer => {
-    const { developers } = this.state;
-    const newState = developers.filter(data => {
-      return data.uid !== developer.uid;
-    });
-    this.setState({ developers: newState });
-  };
-
-  updateData = developer => {
-    this.refs.uid.value = developer.uid;
-    this.refs.name.value = developer.name;
-    this.refs.role.value = developer.role;
-  };
+    console.log("Students data", this.students);
+    this.setState({students: this.students});
+  }
 
   render() {
-    const { developers } = this.state;
-    console.log("hello render", developers);
+
+    console.log(this.state);
+    console.log(this.students);
+
+
     return (
      
       <React.Fragment>
@@ -183,18 +86,18 @@ export class Students extends React.Component {
                   style={{ width: "18rem", marginRight: "1rem" }}
                 >
                   <div className="card-body">
-                    <h5 className="card-title">Name: {developer.name}</h5>
+                    <h5 className="card-title">First Name: {developer.firstName}</h5>
+                    <h5 className="card-title">Last Name: {developer.lastName}</h5>
                     <h5 className="card-title">School: {developer.school}</h5>
                     <h5 className="card-title">Session: {developer.session}</h5>
-                    <p className="card-text">Mentor: {developer.mentor}</p>
+                    <h5 className="card-title">Mentor Key: {developer.mentorKey}</h5>
+                    {/*<p className="card-text">Mentor: {developer.mentor}</p>*/}
                     <button
-                      onClick={() => this.removeData(developer)}
                       className="btn btn-link"
                     >
                       Delete
                     </button>
                     <button
-                      onClick={() => this.updateData(developer)}
                       className="btn btn-link"
                     >
                       Edit
@@ -208,7 +111,7 @@ export class Students extends React.Component {
           <div className="row">
             <div className="col-xl-12">
               <h1>Add new team member here</h1>
-              <form onSubmit={this.handleSubmit}>
+              <form>
                 <div className="form-row">
                   <input type="hidden" ref="uid" />
                   <div className="form-group col-md-6">

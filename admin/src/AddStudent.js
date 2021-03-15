@@ -163,11 +163,6 @@ export class AddStudent extends React.Component {
                                         <option key={mentor.key} value={mentor.key}>{mentor.displayName}</option>
 
                                     ))}
-                                    {/*<option value="grapefruit">Grapefruit</option>*/}
-                                    {/*<option value="lime">Lime</option>*/}
-                                    {/*<option value="coconut">Coconut</option>*/}
-                                    {/*<option value="mango">Mango</option>*/}
-                                    {/*<option value="ALANNAHALANNAHALANNAHALANNAHALANNAHALANNAH">ALANNAHALANNAHALANNAHALANNAHALANNAHALANNAH</option>*/}
                                 </select>
                             </div>
                             </div>
