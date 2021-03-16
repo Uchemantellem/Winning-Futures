@@ -12,6 +12,7 @@ import {Home} from './Home';
 import {AddMentors} from './AddMentors';
 import {Students} from './Students';
 import {Sessions} from './Sessions';
+import {AddStudent} from "./AddStudent";
 
 class App extends React.Component {
   constructor(props) {
@@ -39,12 +40,18 @@ class App extends React.Component {
             <li>
               <Link to="/Forms">Forms</Link>
             </li>
+              <li>
+                  <Link to="/AddStudents">Add Students</Link>
+              </li>
           </ul>
         </nav>
 
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
         <Switch>
+            <Route path="/AddStudents">
+                <AddStudent />
+            </Route>
            <Route path="/Forms">
               <Forms />
             </Route>
