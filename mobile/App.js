@@ -6,6 +6,8 @@ import { LoginScreen } from './LoginScreen';
 import { HomeScreen } from './HomeScreen';
 import { StudentScreen } from './StudentScreen';
 import {SurveyScreen} from './SurveyScreen';
+import {Submitted} from './submitted';
+
 const Stack = createStackNavigator();
 
 const theme = {
@@ -31,6 +33,7 @@ function App() {
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Survey" component={SurveyScreen} />
           <Stack.Screen name="Student" component={StudentScreen} />
+          <Stack.Screen name="Submitted" component={Submitted} />
         </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>

@@ -97,7 +97,6 @@ export class SurveyScreen extends React.Component {
                                 {label: 'December', value: 'December' },
 
                             ]}
-                            
                             containerStyle={{height: 40}}
                             style={{backgroundColor: '#fafafa'}}
                             itemStyle={{
@@ -140,7 +139,6 @@ export class SurveyScreen extends React.Component {
                                 
 
                             ]}
-                            
                             containerStyle={{height: 40}}
                             style={{backgroundColor: '#fafafa'}}
                             itemStyle={{
@@ -155,7 +153,7 @@ export class SurveyScreen extends React.Component {
                     </View>
                 </View>
 
-                <View style={SurveyStyles.questionPicker} >
+                <View style={SurveyStyles.questionPicker2} >
 
                     <Text style={SurveyStyles.questionsText}> 4. Date for this call </Text>
 
@@ -167,7 +165,6 @@ export class SurveyScreen extends React.Component {
                                 
 
                             ]}
-                            
                             containerStyle={{height: 40}}
                             style={{backgroundColor: '#fafafa'}}
                             itemStyle={{
@@ -369,7 +366,7 @@ export class SurveyScreen extends React.Component {
             <View style={SurveyStyles.buttonEnd}>
                         <TouchableOpacity 
                         style={SurveyStyles.buttonContainerSurv}
-                        //onPress={this.}
+                        onPress={()=>this.props.navigation.navigate('Submitted')}
                         >
                         <Text style={SurveyStyles.buttonText}>Submit</Text>
                         </TouchableOpacity>

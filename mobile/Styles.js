@@ -278,6 +278,11 @@ export const SurveyStyles = StyleSheet.create({
   },
 
   questionPicker2: {
+    zIndex: 9,
+    marginTop: 10,
+  },
+
+  questionPicker2: {
     marginTop: 10,
     marginBottom: 30,
 
@@ -285,9 +290,13 @@ export const SurveyStyles = StyleSheet.create({
 
   name:{
     fontSize: 20,
-    marginLeft: 8,
+    marginLeft: 8, 
+  },
 
-   
+  name2:{
+    fontSize: 20,
+    marginLeft: 8, 
+    marginBottom: 58,
   },
 
   blueContainer:{
@@ -350,7 +359,16 @@ buttonText: {
   fontSize: 18,
   color: 'white',
   fontWeight:"bold",
-}
+},
 
+buttonContainerOK: {
+ 
+  flexDirection: "row",
+  alignItems: 'center',
+ 
+  
+},
 
   });
+
+ 
