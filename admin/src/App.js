@@ -8,28 +8,59 @@ import {
   Link
 } from "react-router-dom";
 import {Forms} from './Forms';
-import {Home} from './Home';
+import Home from './Home';
 import {AddMentors} from './AddMentors';
 import {Students} from './Students';
 import {Sessions} from './Sessions';
 import {AddStudent} from "./AddStudent";
+import AdminLogin from "./AdminLogin";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
+    //test to see if needed
+    // Firebase.initializeApp(config.firebase);
+    if (!Firebase.apps.length) {
+      Firebase.initializeApp(config);
+    }else {
+      Firebase.app(); // if already initialized, use that one
+    }
+    this.state = {
+      user: {}
+    }
   }
 
+  //checks state of user whether logged in or not
+  authListener() {
+    Firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+            this.setState({user});
+        }
+        else {
+            this.setState({user:null});
+        }
+    });
+  }
 
+  componentDidMount() {
+      this.authListener();
+  }
 
   render() {
+
     return (
+      <div>
+        {this.state.user ? (
 
     <Router>
       <div>
         <nav>
           <ul>
+            {/* <li>
+              <Link to="/">AdminLogin</Link>
+            </li> */}
             <li>
-              <Link to="/">Home</Link>
+              <Link to="/Home">Home</Link>
             </li>
             <li>
               <Link to="/AddMentors">Add Mentors</Link>
@@ -67,12 +98,14 @@ class App extends React.Component {
             <Route path ="/Sessions">
               <Sessions/>
             </Route>
-            <Route path="/"> 
-              <Home/>  
-            </Route>
+            {/* <Route path="/AdminLogin"> 
+              <AdminLogin/>  
+            </Route> */}
         </Switch>
       </div>
     </Router>
+    ) : (<AdminLogin/>)}
+    </div>
     );
   }
 }

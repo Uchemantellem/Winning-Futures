@@ -1,9 +1,7 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { ReactFormBuilder } from 'react-form-builder2';
-import 'react-form-builder2/dist/app.css';
-
-
+import { Form } from 'react-formio';
+import "formiojs/dist/formio.full.css";
+import "bootstrap/dist/css/bootstrap.css";
 
 export class Forms extends React.Component {
     constructor(props) {
@@ -11,7 +9,11 @@ export class Forms extends React.Component {
     }
 
     render() {
-        return <ReactFormBuilder />;
+        return (
+            <div style={{padding:40}}>
+                <Form src="https://tkjujrjyhdygpzy.form.io/successcoachform" />
+            </div>
+            
+        )
     }
-
 }
