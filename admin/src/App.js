@@ -66,13 +66,14 @@ class App extends React.Component {
               <Link to="/AddMentors">Add Mentors</Link>
             </li>
             <li>
-              <Link to="/Students">Students</Link>
+            <Link to="/AddStudents">Add Students</Link>
+              
             </li>
             <li>
-              <Link to="/Forms">Forms</Link>
+            <Link to="/Students">Students</Link>
             </li>
               <li>
-                  <Link to="/AddStudents">Add Students</Link>
+              <Link to="/Forms">Forms</Link>
               </li>
           </ul>
         </nav>
