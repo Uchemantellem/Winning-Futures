@@ -5,7 +5,8 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
+  withRouter
 } from "react-router-dom";
 
 
@@ -22,7 +23,7 @@ export class Students extends React.Component {
     this.mentorsRef = Firebase.firestore().collection('mentors');
     this.studentsRef = Firebase.firestore().collection('students');
 
-    // TODO: Find a better way to handle this w/ the getStudents function
+    this.mentors = [];
     this.students = [];
     this.state = {
       students: []
@@ -31,40 +32,44 @@ export class Students extends React.Component {
   }
 
   componentDidMount() {
+    this.getMentors();
     this.getStudents();
   };
 
-  getMentorByKey = async (mentorKey) => {
-    let mentorRef = await this.mentorsRef.doc(mentorKey);
+  getMentors = async () => {
+      let querySnap = await this.mentorsRef.get();
+      querySnap.forEach(async qDocSnap => {
+          let data = qDocSnap.data();
+          let thisMentor = {
+              key: qDocSnap.id,
+              displayName: data.displayName
+          }
+          this.mentors.push(thisMentor);
+      })
+  }
 
-    if (!mentorRef.exists) {
-      console.log("No such mentor!");
-      return {}
-    } else {
-      console.log("Found a mentor");
-      let mentor = mentorRef.data();
-      return mentor;
-    };
+  getMentorByKey = (mentorKey) => {
+      for (const mentor of this.mentors) {
+          if (mentor.key === mentorKey) {
+              return mentor;
+          }
+      }
   }
 
   getStudents = async () => {
     let querySnap = await this.studentsRef.get();
     querySnap.forEach(qDocSnap => {
-      let data = qDocSnap.data();
-      data.mentor = this.getMentorByKey(data.mentorKey); // TODO: Get this working
-      this.students.push(data);
-      console.log(data);
+      let studentData = qDocSnap.data();
+      studentData.id = qDocSnap.id;
+      studentData.mentor = this.getMentorByKey(studentData.mentorKey);
+      this.students.push(studentData);
     })
     console.log("Students data", this.students);
     this.setState({students: this.students});
   }
 
   render() {
-
     console.log(this.state);
-    console.log(this.students);
-
-
     return (
      
       <React.Fragment>
@@ -72,99 +77,35 @@ export class Students extends React.Component {
         <div className="container">
           <div className="row">
             <div className="col-xl-12">
-              <h1>Add a Student</h1>
+              <h1>Students</h1>
             </div>
           </div>
           <div className="row">
             <div className="col-xl-12">
-              {this.students.map(developer => (
+              {this.state.students.map(student => (
                 <>
                 <div
                 //key not needed with react.fragment
-                  key={developer.uid}
+                  key={student.uid}
                   className="card float-left"
                   style={{ width: "18rem", marginRight: "1rem" }}
                 >
                   <div className="card-body">
-                    <h5 className="card-title">First Name: {developer.firstName}</h5>
-                    <h5 className="card-title">Last Name: {developer.lastName}</h5>
-                    <h5 className="card-title">School: {developer.school}</h5>
-                    <h5 className="card-title">Session: {developer.session}</h5>
-                    <h5 className="card-title">Mentor Key: {developer.mentorKey}</h5>
-                    {/*<p className="card-text">Mentor: {developer.mentor}</p>*/}
-                    <button
-                      className="btn btn-link"
-                    >
+                    <h5 className="card-title">First Name: {student.firstName}</h5>
+                    <h5 className="card-title">Last Name: {student.lastName}</h5>
+                    <h5 className="card-title">School: {student.school}</h5>
+                    <h5 className="card-title">Session: {student.session}</h5>
+                    <h5 className="card-title">Mentor: {student.mentor.displayName}</h5>
+                    <button className="btn btn-link">
                       Delete
                     </button>
-                    <button
-                      className="btn btn-link"
-                    >
-                      Edit
-                    </button>
+                      <Link to={"/AddStudents?id=" + student.id}>
+                          Edit
+                      </Link>
                   </div>
                 </div>
                 </>
               ))}
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-xl-12">
-              <h1>Add new team member here</h1>
-              <form>
-                <div className="form-row">
-                  <input type="hidden" ref="uid" />
-                  <div className="form-group col-md-6">
-                    <label>Name</label>
-                    <input
-                      type="text"
-                      ref="name"
-                      className="form-control"
-                      placeholder="Name"
-                    />
-                  </div>
-                  <div className="form-group col-md-6">
-                    <label>School</label>
-                    <input
-                      type="text"
-                      ref="school"
-                      className="form-control"
-                      placeholder="Session"
-                    />
-                  </div>
-                  <div className="form-group col-md-6">
-                    <label>Session</label>
-                    <input
-                      type="text"
-                      ref="session"
-                      className="form-control"
-                      placeholder="Session"
-                    />
-                  </div>
-                  <div className="form-group col-md-6">
-                    <label>Mentor</label>
-                    <input
-                      type="text"
-                      ref="mentor"
-                      className="form-control"
-                      placeholder="Mentor"
-                    />
-                  </div>
-                </div>
-                <button type="submit" className="btn btn-primary">
-                  Save
-                </button>
-              </form>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-xl-12">
-              <h3>
-                Tutorial{" "}
-                <a href="https://sebhastian.com/react-firebase-real-time-database-guide">
-                  here
-                </a>
-              </h3>
             </div>
           </div>
         </div>
@@ -174,4 +115,4 @@ export class Students extends React.Component {
 }
 
 
-//export default App;
+export default withRouter(Students);

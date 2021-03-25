@@ -5,7 +5,8 @@ import {
     BrowserRouter as Router,
     Switch,
     Route,
-    Link
+    Link,
+    withRouter,
 } from "react-router-dom";
 
 
@@ -26,7 +27,8 @@ export class AddStudent extends React.Component {
             lastName: "",
             school: "",
             session: "",
-            selectedMentor: ""
+            selectedMentor: "",
+            studentKey: ""
         }
         ;
 
@@ -34,39 +36,60 @@ export class AddStudent extends React.Component {
     };
 
     componentDidMount() {
-        this.getMentorsData();
+        this.getMentors();
+
+        let params = new URLSearchParams(window.location.search); // TODO: FIND A BETTER WAY TO DO THIS
+        let studentKey = params.get("id");
+        if (studentKey) {
+            this.getStudentByKey(studentKey);
+        }
     }
 
-    writeStudentData = async (firstName, lastName, school, session, mentorKey) => {
-        let newStudent = {
-            firstName: firstName,
-            lastName: lastName,
-            school: school,
-            session: session,
-            mentorKey: mentorKey
-        };
-        let newStudentDocRef = await this.studentsRef.add(newStudent);
-        newStudent.key = newStudentDocRef.id;
-        return newStudent;
+
+    writeStudentData = async (studentKey, firstName, lastName, school, session, mentorKey) => {
+
+        if (studentKey) {
+            this.studentsRef.doc(studentKey).set({
+                firstName: firstName,
+                lastName: lastName,
+                school: school,
+                session: session,
+                mentorKey: mentorKey
+            })
+        } else {
+
+            let newStudent = {
+                firstName: firstName,
+                lastName: lastName,
+                school: school,
+                session: session,
+                mentorKey: mentorKey
+            };
+            let newStudentDocRef = await this.studentsRef.add(newStudent);
+            newStudent.key = newStudentDocRef.id;
+            return newStudent;
+        }
     };
 
     handleSubmit = event => {
         event.preventDefault();
+        let studentKey = this.state.studentKey;
         let firstName = this.state.firstName;
         let lastName = this.state.lastName;
         let school = this.state.school;
         let session = this.state.session;
         let selectedMentor = this.state.selectedMentor;
 
-        this.writeStudentData(firstName, lastName, school, session, selectedMentor);
-        console.log("Submitted", firstName, lastName, school, session, selectedMentor);
+        this.writeStudentData(studentKey, firstName, lastName, school, session, selectedMentor);
+        console.log("Submitted", studentKey, firstName, lastName, school, session, selectedMentor);
 
         this.setState({
             firstName: "",
             lastName: "",
             school: "",
             session: "",
-            selectedMentor: ""
+            selectedMentor: "",
+            studentKey: ""
         })
     };
 
@@ -85,7 +108,7 @@ export class AddStudent extends React.Component {
             });
     };
 
-    getMentorsData = async () => {
+    getMentors = async () => {
         let querySnap = await this.mentorsRef.get();
         querySnap.forEach(qDocSnap => {
             let key = qDocSnap.id;
@@ -93,9 +116,39 @@ export class AddStudent extends React.Component {
             data.key = key;
             this.mentors.push(data);
         })
-        console.log("Mentors data", this.mentors);
-        this.setState({mentors: this.mentors})
     };
+
+    getMentorByKey = (mentorKey) => {
+        for (const mentor of this.mentors) {
+            if (mentor.key === mentorKey) {
+                return mentor;
+            }
+        }
+    }
+
+    getStudentByKey = async (studentKey) => {
+        let querySnap = await this.studentsRef.get();
+        querySnap.forEach(qDocSnap => {
+                let studentData = qDocSnap.data();
+                if (qDocSnap.id === studentKey) {
+                    studentData.mentor = this.getMentorByKey(studentData.mentorKey);
+                    console.log(studentData);
+
+                    this.setState(
+                        {
+                            firstName: studentData.firstName,
+                            lastName: studentData.lastName,
+                            school: studentData.school,
+                            session: studentData.session,
+                            selectedMentor: studentData.mentor.key,
+                            studentKey: studentKey
+                        }
+                    )
+                }
+            }
+        )
+    }
+
 
     render() {
         console.log("hello render", this.state);
@@ -105,7 +158,7 @@ export class AddStudent extends React.Component {
             <div className="container">
             <div className="row">
                 <div className="col-xl-12">
-                    <h1>Add New Student Here</h1>
+                    <h1>{this.state.studentKey ? "Edit" : "Add New" } Student Here</h1>
                     <form onSubmit={this.handleSubmit}>
                         <div className="form-row">
                             <div className="form-group col-md-6">
@@ -178,5 +231,4 @@ export class AddStudent extends React.Component {
     }
 }
 
-
-//export default App;
+export default withRouter(AddStudent);
