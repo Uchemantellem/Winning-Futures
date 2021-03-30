@@ -68,28 +68,6 @@ export class Students extends React.Component {
     this.setState({students: this.students});
   }
 
-  deleteStudent = async (student) => {
-    console.log(student)
-    // event.preventDefault();
-    //delete from db
-    let docRef = await this.studentsRef.doc(student.id)
-    await docRef.delete();
-
-    //search and delete from thelist display
-    let foundIndex = -1;
-    for (let idx in this.students) {
-      if (this.students[idx].id === student.id) {
-        foundIndex = idx;
-        break;
-      }
-    }
-    if (foundIndex !== -1) { // silently fail if item not found
-      this.students.splice(foundIndex, 1); // remove one element 
-    }
-    this.setState({students: this.students});
-
-  }
-
   render() {
     console.log(this.state);
     return (
@@ -118,7 +96,7 @@ export class Students extends React.Component {
                     <h5 className="card-title">School: {student.school}</h5>
                     <h5 className="card-title">Session: {student.session}</h5>
                     <h5 className="card-title">Mentor: {student.mentor.displayName}</h5>
-                    <button onClick={() => this.deleteStudent(student)} className="btn btn-link">
+                    <button className="btn btn-link">
                       Delete
                     </button>
                       <Link to={"/AddStudents?id=" + student.id}>
