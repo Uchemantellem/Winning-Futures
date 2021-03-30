@@ -1,0 +1,207 @@
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  margin: 0;
+  font-family:Arial, Helvetica, sans-serif;
+  display: grid;
+/*  justify-items: center;*/
+/*  align-items: center;*/
+  background-color: white;
+}
+
+h4{
+color: black;	
+	margin-top: 400px;
+	
+	
+}
+#main-holder {
+  width: 30rem;
+  height: 100vh;
+	position: relative;
+	background-image: url("../img/wflogo.png");
+	background-size: 174px 110px;
+	background-position: 50% 25%;
+	background-repeat: no-repeat;
+	 z-index: 1;
+/*	overflow-x: hidden;*/
+/*  display: grid;*/
+	text-align: center;
+	
+/*  justify-items:center;*/
+  background-color: white;
+/*  border-radius: 7px;*/
+/*  box-shadow: 0px 0px 5px 2px black;*/
+}
+
+/*
+#login-error-msg-holder {
+  width: 100%;
+  height: 100%;
+  display: grid;
+	position: absolute;
+  justify-items: center;
+  align-items: center;
+}
+*/
+
+/*
+#login-error-msg {
+  width: 23%;
+  text-align: center;
+  margin: 0;
+  padding: 5px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #8a0000;
+  border: 1px solid #8a0000;
+  background-color: #e58f8f;
+  opacity: 0;
+}
+
+#error-msg-second-line {
+  display: block;
+}
+*/
+
+#login-form {
+  align-self: flex-start;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+}
+
+.login-form-field::placeholder {
+  color: #747474;
+}
+
+.login-form-field {
+  border: 0.5px solid #2643BE;
+  margin-bottom: 10px;
+  border-radius: 5px;
+/*  outline: none;*/
+  padding: 10px 10px 10px 10px;
+}
+
+#login-form-submit {
+	display: inline-block;
+    background: white;
+    position: relative;
+    border-radius: 10px;
+ 
+	border:2px solid #2643BE;
+margin-top: 20px;
+/*  font-weight: bold;*/
+  	background-image: url("../img/rightarrow.png");
+	background-size: 30px 30px;
+	background-position: center;
+	background-repeat: no-repeat;
+	padding: 20px ;
+	 width: 50px;
+	height: 50px;
+
+
+  cursor: pointer;
+/*  outline: none;*/
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/** {box-sizing: border-box;}*/
+/*.mySlides {display: none;}*/
+img {
+  margin-right: 0;
+	max-height:100vh;
+	vertical-align: center;
+
+}
+
+.slideshow-container {
+  position: absolute;
+  right: 0;
+/*	width:80rem;*/
+top:0;
+height: 100vh;	
+/*
+  max-width: 1000px;
+*/
+}
+
+.threedots{
+	position: fixed;
+	margin-bottom: 0;
+	  justify-items: center;
+
+/*text-align: center;	*/
+
+}
+/* The dots/bullets/indicators */
+.dot {
+height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #6E7DBC;
+
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;	
+}
+
+.active {
+  background-color: #2643BE;
+}
+
+/* Fading animation */
+.fade {
+  -webkit-animation-name: fade;
+  -webkit-animation-duration: 1.5s;
+  animation-name: fade;
+  animation-duration: 1.5s;
+}
+
+@-webkit-keyframes fade {
+  from {opacity: .4} 
+  to {opacity: 1}
+}
+
+@keyframes fade {
+  from {opacity: .4} 
+  to {opacity: 1}
+}
+
+/* On smaller screens, decrease text size */
+/*
+@media only screen and (max-width: 300px) {
+  .text {font-size: 11px}
+}
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
