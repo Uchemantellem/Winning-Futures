@@ -10,6 +10,7 @@ import {
 import {Forms} from './Forms';
 import Home from './Home';
 import {AddMentors} from './AddMentors';
+import {Mentors} from './Mentors';
 import {Students} from './Students';
 import {Sessions} from './Sessions';
 import {AddStudent} from "./AddStudent";
@@ -70,6 +71,9 @@ class App extends React.Component {
               
             </li>
             <li>
+            <Link to="/Mentors">Mentors</Link>
+            </li>
+            <li>
             <Link to="/Students">Students</Link>
             </li>
               <li>
@@ -92,6 +96,9 @@ class App extends React.Component {
             </Route>
             <Route path ="/AddMentors">
               <AddMentors/>
+            </Route>
+            <Route path ="/Mentors">
+              <Mentors/>
             </Route>
             <Route path ="/Students">
               <Students/>

@@ -140,7 +140,7 @@ export class AddStudent extends React.Component {
                             lastName: studentData.lastName,
                             school: studentData.school,
                             session: studentData.session,
-                            selectedMentor: studentData.mentor.key,
+                            selectedMentor: studentData.mentor == undefined ? "" : studentData.mentor.key,
                             studentKey: studentKey
                         }
                     )
