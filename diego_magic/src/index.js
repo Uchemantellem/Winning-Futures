@@ -24,6 +24,13 @@ var firebaseConfig = {
 
 const form1Url = "https://tkjujrjyhdygpzy.form.io/successcoachform";
 const form2Url = "https://tkjujrjyhdygpzy.form.io/20202021charactervaluespage4pae1hour";
+const form3Url = "https://tkjujrjyhdygpzy.form.io/20202021careerexplorationpage13pae1sthour";
+const form4Url = "https://tkjujrjyhdygpzy.form.io/20202021visionpage1112pae1sthour";
+const form5Url = "https://tkjujrjyhdygpzy.form.io/20202021visionpage1112harperwoods2ndhour";
+const form6Url = "https://tkjujrjyhdygpzy.form.io/20202021striveforsuccessacademicgoalpage8harperwoods1sthour";
+const form7Url = "https://tkjujrjyhdygpzy.form.io/20202021strengthsharperwoods1sthour";
+
+
 
 window.onload = async function () {
 
@@ -101,6 +108,46 @@ window.onload = async function () {
         let json = await loadJson(form2Url);
         renderForm(json);
         selectedForm = "form2";
+        buttonsDiv.style.display = "none";
+        formDiv.style.display = "block";
+    }
+    let form3 = document.getElementById("form3");
+    form3.onclick = async () => {
+        let json = await loadJson(form3Url);
+        renderForm(json);
+        selectedForm = "form3";
+        buttonsDiv.style.display = "none";
+        formDiv.style.display = "block";
+    }
+    let form4 = document.getElementById("form4");
+    form4.onclick = async () => {
+        let json = await loadJson(form4Url);
+        renderForm(json);
+        selectedForm = "form4";
+        buttonsDiv.style.display = "none";
+        formDiv.style.display = "block";
+    }
+    let form5 = document.getElementById("form5");
+    form5.onclick = async () => {
+        let json = await loadJson(form5Url);
+        renderForm(json);
+        selectedForm = "form5";
+        buttonsDiv.style.display = "none";
+        formDiv.style.display = "block";
+    }
+    let form6 = document.getElementById("form6");
+    form6.onclick = async () => {
+        let json = await loadJson(form6Url);
+        renderForm(json);
+        selectedForm = "form6";
+        buttonsDiv.style.display = "none";
+        formDiv.style.display = "block";
+    }
+    let form7 = document.getElementById("form7");
+    form7.onclick = async () => {
+        let json = await loadJson(form7Url);
+        renderForm(json);
+        selectedForm = "form7";
         buttonsDiv.style.display = "none";
         formDiv.style.display = "block";
     }

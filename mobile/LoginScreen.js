@@ -84,12 +84,7 @@ export class LoginScreen extends React.Component {
         <View style={loginStyles.topView}>
 
       
-        <TouchableOpacity 
-              style={loginStyles.buttonContainerTEST}
-              onPress={()=>this.props.navigation.navigate('Home')}
-              >
-              <Text style={loginStyles.buttonTextTEST}>Nav</Text>
-            </TouchableOpacity>
+        
 
 
           <Image 
