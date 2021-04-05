@@ -15,15 +15,6 @@ import {WebView} from "react-native-webview";
 export class SurveyScreen extends React.Component {
     constructor(props) {
       super(props);
-      this.state = {
-          month: 'January', 
-          topic: '',
-          questionTwoSelection : '',
-         // duration: '',
-
-
-      }
-
     }
 
  
@@ -33,7 +24,7 @@ export class SurveyScreen extends React.Component {
     render() {
         return ( 
            
-        <WebView source={{ uri: 'http://172.20.10.2:3000/Forms/user/login/submission'}}/>
+        <WebView source={require("./assets/index.html")}/>
 
 
   
