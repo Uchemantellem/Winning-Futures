@@ -86,14 +86,14 @@ export class LoginScreen extends React.Component {
       
         <TouchableOpacity 
               style={loginStyles.buttonContainerTEST}
-              onPress={()=>this.props.navigation.navigate('Survey')}
+              onPress={()=>this.props.navigation.navigate('Home')}
               >
-              <Text style={loginStyles.buttonTextTEST}>Test Nav</Text>
+              <Text style={loginStyles.buttonTextTEST}>Nav</Text>
             </TouchableOpacity>
 
 
           <Image 
-            source={require('./assets/mentorship.png')}
+            source={require('./assets/WFLogo.png')}
             style={loginStyles.logoImage}
           />
         </View>
@@ -164,14 +164,7 @@ export class LoginScreen extends React.Component {
               <Text style={loginStyles.buttonText}>Login</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity 
-              style={loginStyles.buttonContainer}
-              onPress={()=>{
-                this.setState({mode: 'create'})
-              }}
-              >
-              <Text style={loginStyles.buttonText}>Register</Text>
-            </TouchableOpacity>
+            
           </View>
 
         ):(

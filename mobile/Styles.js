@@ -28,8 +28,8 @@ export const loginStyles = StyleSheet.create({
       logoImage: {
         alignItems: 'center',
         justifyContent: 'center',
-        width: '50%',
-        height: '50%',
+        width: '60%',
+        height: '60%',
         resizeMode: 'contain',
       },
     middleView: {
@@ -125,7 +125,7 @@ export const loginStyles = StyleSheet.create({
           buttonTextTEST: {
             textAlign: 'center',
             fontSize: 14,
-            color: '#B7B7B7',
+            color: '#f5f5f5',
 
           }
 });
