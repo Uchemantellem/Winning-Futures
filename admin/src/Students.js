@@ -89,6 +89,15 @@ export class Students extends React.Component {
     this.setState({students: this.students});
 
   }
+  
+  rendorMentor = (student) => {
+    if (student.mentor == undefined) {
+      return <h5 className="card-title">Mentor: No Mentor, Click edit to assign a Mentor</h5>
+    }
+    else {
+      return <h5 className="card-title">Mentor: {student.mentor.displayName}</h5>
+    }
+  }
 
   render() {
     console.log(this.state);
@@ -117,7 +126,7 @@ export class Students extends React.Component {
                     <h5 className="card-title">Last Name: {student.lastName}</h5>
                     <h5 className="card-title">School: {student.school}</h5>
                     <h5 className="card-title">Session: {student.session}</h5>
-                    <h5 className="card-title">Mentor: {student.mentor.displayName}</h5>
+                    {this.rendorMentor(student)}
                     <button onClick={() => this.deleteStudent(student)} className="btn btn-link">
                       Delete
                     </button>
