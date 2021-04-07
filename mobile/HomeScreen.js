@@ -11,6 +11,7 @@ export class HomeScreen extends React.Component {
     super(props);
     this.self = this.props.route.params.currentUser;
     this.dataModel = getDataModel();
+    this.studentsRef = Firebase.firestore().collection('students');
 
     this.state = {
       studentList: []
@@ -42,11 +43,13 @@ export class HomeScreen extends React.Component {
   getInventory = async () => {
     // console.log("student list", this.state.studentList);
     // the current users data
-    let qSnap = await this.dataModel.getusersRef().doc(this.self.key).collection("students").get();
+    let qSnap = await this.studentsRef.get();
     qSnap.forEach(qDocSnap => {
       let data = qDocSnap.data();
-      data.key = qDocSnap.id;;
-      this.state.studentList.push(data);
+      if (data.mentorKey == this.self.id) {
+        data.key = qDocSnap.id;
+        this.state.studentList.push(data);
+      }
     })
 
     this.setState({studentList: this.state.studentList});
