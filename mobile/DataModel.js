@@ -9,10 +9,14 @@ class DataModel {
       firebase.initializeApp(firebaseConfig);
     }
     this.usersRef = firebase.firestore().collection('mentors');
+    this.studentsRef = Firebase.firestore().collection('students');
     this.users = [];
     this.asyncInit();
   }
 
+  getstudentsRef = () => {
+    return this.studentsRef;
+  }
   getusersRef = () => {
     return this.usersRef;
   }
