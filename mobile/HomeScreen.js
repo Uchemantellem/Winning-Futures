@@ -45,7 +45,8 @@ export class HomeScreen extends React.Component {
     let qSnap = await this.dataModel.getstudentsRef().get();
     qSnap.forEach(qDocSnap => {
       let data = qDocSnap.data();
-      if (data.mentorKey == this.self.id) {
+      console.log(this.self);
+      if (data.mentorKey == this.self.key) {
         data.key = qDocSnap.id;
         this.state.studentList.push(data);
       }

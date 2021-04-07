@@ -8,7 +8,7 @@ class DataModel {
     if (firebase.apps.length === 0) { // aka !firebase.apps.length
       firebase.initializeApp(firebaseConfig);
     }
-    this.usersRef = firebase.firestore().collection('mentors');
+    this.usersRef = Firebase.firestore().collection('mentors');
     this.studentsRef = Firebase.firestore().collection('students');
     this.users = [];
     this.asyncInit();
