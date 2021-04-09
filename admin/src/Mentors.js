@@ -2,6 +2,7 @@ import React from "react";
 import Firebase from "firebase";
 import config from "./config";
 import CsvDownload from 'react-json-to-csv';
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -91,16 +92,20 @@ export class Mentors extends React.Component {
   renderMentorStudentForms = async (mentor, form, student) => {
     let formsRef = Firebase.firestore().collection(form);
     let querySnap = await formsRef.get();
-    var info;
+    var info = [];
     querySnap.forEach(async qDocSnap => {
         let data = qDocSnap.data();
-        console.log("data!@#!@", data, "form number!", form);
         // Ensures correct info is the selected mentors form
-        if (data.YourEmail == mentor.email) {
+        if (data.YourEmail.toLowerCase() == mentor.email.toLowerCase() && data.menteeName.toLowerCase() == student.toLowerCase()) {
+        //  if (data.YourEmail.toLowerCase() == mentor.email.toLowerCase()) { 
           console.log("the mentor name is ", mentor.displayName);
-          console.log("the student", this.students)
+          console.log("the student", student);
+          // most up to date form
+          info = data;
+          // for filename purposes
+          info["menteeName"] = info["menteeName"].replace(/\s+/g, '_');
+          // console.log("data!@#!@", data, "form number!", form);
         }
-        info = data;
         // let thisMentor = {
         //     id: qDocSnap.id,
         //     displayName: data.displayName,
@@ -109,7 +114,37 @@ export class Mentors extends React.Component {
            
         // }
     })
-    console.log("this is the infooo", info);
+    console.log(info);
+    // let results = {}
+    // for (let d in info) {
+    //  console.log(info[d]);
+    // console.log(d);
+    // if (typeof info[d]["videoCall"] !== "undefined") {
+    //   results["videoCall"] = info[d]["videoCall"];
+    //   console.log("he");
+    // }
+    // else if (typeof info[d]["other"] !== "undefined") {
+    //   results["other"] = info[d]["other"];
+    //   console.log("he");
+    // }
+    // else if (typeof info[d]["email"] !== "undefined") {
+    //   results["email"] = info[d]["email"];
+    //   console.log("he");
+    // }
+    // else if (typeof info[d]["phoneCall"] !== "undefined") {
+    //   results["phoneCall"] = info[d]["phoneCall"];
+    //   console.log("he");
+    // }
+    // else if (typeof info[d]["textMessagingSystem"] !== "undefined") {
+    //   results["textMessagingSystem"] = info[d]["textMessagingSystem"];
+    //   console.log("he");
+    // }
+    // else{
+      // results[d] = info[d]
+    // }
+    //  results["videoCall"] = typeof info[d]["videoCall"] !== "undefined" ? info[d]["videoCall"] : info[d];
+    //  results["videoCall"] = typeof info[d]["videoCall"] !== "undefined" ? info[d]["videoCall"] : info[d];
+    // }
     this.setState({data: info});
   }
 
@@ -213,9 +248,7 @@ getStudents = async () => {
                         
                       ))}
                    </select>
-                      {/*  */}
-                      <CsvDownload data={Object.entries(this.state.data)}/>
-                      {/* <CsvDownload data={Object.entries(mentor)}></CsvDownload> */}
+                      <CsvDownload filename={mentor.displayName + "_" + this.state.data.menteeName + "_" + form + ".csv"} data={Object.entries(this.state.data)}/>
                       
                   </div>
                 </div>
