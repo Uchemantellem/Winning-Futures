@@ -45,7 +45,8 @@ export class HomeScreen extends React.Component {
     let qSnap = await this.dataModel.getstudentsRef().get();
     qSnap.forEach(qDocSnap => {
       let data = qDocSnap.data();
-      if (data.mentorKey == this.self.id) {
+      console.log(data);
+      if (data.mentorKey == this.self.key) {
         data.key = qDocSnap.id;
         this.state.studentList.push(data);
       }
@@ -168,11 +169,11 @@ export class HomeScreen extends React.Component {
                   return(
                     <View style={homeStyles.list}>
                       <TouchableOpacity 
-                        onPress={()=>{this.onStudentPress(item.name)}}>
+                        onPress={()=>{this.onStudentPress(item.firstName + " " + item.lastName)}}>
                         <View style = {homeStyles.textRowTop}> 
                           
                           <Text style={homeStyles.nameText}>
-                            {item.name}
+                            {item.firstName + " " + item.lastName}
                           </Text>
                         </View> 
                         <View style = {homeStyles.textRow}> 
@@ -185,16 +186,16 @@ export class HomeScreen extends React.Component {
                         </View>  
                         <View style = {homeStyles.textColumn}> 
                           <Text style={homeStyles.textBold}>
-                              Next Session:
+                              Next Session: 
                           </Text>
                           <Text style={homeStyles.textRegular}>
-                            {/* {item.session} */}
+                            {item.session}
                           </Text>
                         </View>
                         <View style = {homeStyles.textColumn}> 
-                          <Text style={homeStyles.textBold}>
+                          {/* <Text style={homeStyles.textBold}>
                               Info:
-                          </Text>
+                          </Text> */}
                           <Text style={homeStyles.textRegular}>
                             {/* {item.session} */}
                           </Text>

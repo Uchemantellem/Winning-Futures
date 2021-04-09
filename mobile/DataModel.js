@@ -9,7 +9,7 @@ class DataModel {
       firebase.initializeApp(firebaseConfig);
     }
     this.usersRef = firebase.firestore().collection('mentors');
-    this.studentsRef = Firebase.firestore().collection('students');
+    this.studentsRef = firebase.firestore().collection('students');
     this.users = [];
     this.asyncInit();
   }
