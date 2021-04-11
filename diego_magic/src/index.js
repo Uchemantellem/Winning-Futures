@@ -22,15 +22,7 @@ var firebaseConfig = {
   };
 
 
-const form1Url = "https://tkjujrjyhdygpzy.form.io/successcoachform";
-const form2Url = "https://tkjujrjyhdygpzy.form.io/20202021charactervaluespage4pae1hour";
-const form3Url = "https://tkjujrjyhdygpzy.form.io/20202021careerexplorationpage13pae1sthour";
-const form4Url = "https://tkjujrjyhdygpzy.form.io/20202021visionpage1112pae1sthour";
-const form5Url = "https://tkjujrjyhdygpzy.form.io/20202021visionpage1112harperwoods2ndhour";
-const form6Url = "https://tkjujrjyhdygpzy.form.io/20202021striveforsuccessacademicgoalpage8harperwoods1sthour";
-const form7Url = "https://tkjujrjyhdygpzy.form.io/20202021strengthsharperwoods1sthour";
-
-
+const formsUrl = "https://tkjujrjyhdygpzy.form.io/form";
 
 window.onload = async function () {
 
@@ -41,7 +33,6 @@ window.onload = async function () {
 
     let cached = false;
     let online = true;
-    let selectedForm = "";
 
     const loadJson = async (url) => {
         let json = undefined;
@@ -82,7 +73,7 @@ window.onload = async function () {
                 form.emit("submitDone", submission);
 
                 // save to db
-                firebase.firestore().collection(selectedForm).add(submission.data).catch(err => {
+                firebase.firestore().collection(jsonFile.name).add(submission.data).catch(err => {
                     console.log(err);
                 })
             });
@@ -94,82 +85,45 @@ window.onload = async function () {
     let formDiv = document.getElementById("formDiv");
     let buttonsDiv = document.getElementById("buttons");
 
-    // buttons logic
-    let form1 = document.getElementById("form1");
-    form1.onclick = async () => {
-        let json = await loadJson(form1Url);
-        renderForm(json);
-        selectedForm = "form1";
-        buttonsDiv.style.display = "none";
-        formDiv.style.display = "block";
-    }
-    let form2 = document.getElementById("form2");
-    form2.onclick = async () => {
-        let json = await loadJson(form2Url);
-        renderForm(json);
-        selectedForm = "form2";
-        buttonsDiv.style.display = "none";
-        formDiv.style.display = "block";
-    }
-    let form3 = document.getElementById("form3");
-    form3.onclick = async () => {
-        let json = await loadJson(form3Url);
-        renderForm(json);
-        selectedForm = "form3";
-        buttonsDiv.style.display = "none";
-        formDiv.style.display = "block";
-    }
-    let form4 = document.getElementById("form4");
-    form4.onclick = async () => {
-        let json = await loadJson(form4Url);
-        renderForm(json);
-        selectedForm = "form4";
-        buttonsDiv.style.display = "none";
-        formDiv.style.display = "block";
-    }
-    let form5 = document.getElementById("form5");
-    form5.onclick = async () => {
-        let json = await loadJson(form5Url);
-        renderForm(json);
-        selectedForm = "form5";
-        buttonsDiv.style.display = "none";
-        formDiv.style.display = "block";
-    }
-    let form6 = document.getElementById("form6");
-    form6.onclick = async () => {
-        let json = await loadJson(form6Url);
-        renderForm(json);
-        selectedForm = "form6";
-        buttonsDiv.style.display = "none";
-        formDiv.style.display = "block";
-    }
-    let form7 = document.getElementById("form7");
-    form7.onclick = async () => {
-        let json = await loadJson(form7Url);
-        renderForm(json);
-        selectedForm = "form7";
-        buttonsDiv.style.display = "none";
-        formDiv.style.display = "block";
-    }
+    let forms = await loadJson(formsUrl);
+    forms.forEach(form => {
+        if (form.type === "form") {
+            let button = document.createElement("button");
+            button.style.marginTop = "18px";
+            button.style.height = "60px";
+            button.style.width = "90%";
+            button.style.alignSelf = "center";
+            button.style.backgroundColor = "#2643BE";
+            button.className = "btn btn-primary";
+            button.innerHTML = form.title;
+            button.onclick = () => {
+                renderForm(form);
+                buttonsDiv.style.display = "none";
+                formDiv.style.display = "block";
+            }
 
-    // logic to enable/disable network for firebase db
-    let network = document.getElementById("toggleNetwork");
-    network.onclick = () => {
-        if (online) {
-            online = false;
-            network.className = "btn btn-danger";
-            network.innerHTML = "Offline";
-            firebase.firestore().disableNetwork().then(()=> {
-                console.log("offline");
-            })
-        } else {
-            online = true;
-            network.className = "btn btn-success";
-            network.innerHTML = "Online";
-            firebase.firestore().enableNetwork().then(()=> {
-                console.log("online");
-            })
+            buttonsDiv.appendChild(button);
         }
-    }
+    });
+
+    // For testing: logic to enable/disable network for firebase db
+    // let network = document.getElementById("toggleNetwork");
+    // network.onclick = () => {
+    //     if (online) {
+    //         online = false;
+    //         network.className = "btn btn-danger";
+    //         network.innerHTML = "Offline";
+    //         firebase.firestore().disableNetwork().then(()=> {
+    //             console.log("offline");
+    //         })
+    //     } else {
+    //         online = true;
+    //         network.className = "btn btn-success";
+    //         network.innerHTML = "Online";
+    //         firebase.firestore().enableNetwork().then(()=> {
+    //             console.log("online");
+    //         })
+    //     }
+    // }
 
 };
