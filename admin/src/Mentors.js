@@ -12,7 +12,7 @@ import {
 } from "react-router-dom";
 
 
-var form = "form1";
+var form = "form2";
 export class Mentors extends React.Component {
   constructor(props) {
     super(props);
@@ -26,7 +26,7 @@ export class Mentors extends React.Component {
     this.studentsRef = Firebase.firestore().collection('students');
     this.mentors = [];
     this.students =[];
-    this.form = "form1";
+    this.form = "form2";
     this.student = "";
     this.state = {
       mentors: [],
@@ -95,24 +95,25 @@ export class Mentors extends React.Component {
     var info = [];
     querySnap.forEach(async qDocSnap => {
         let data = qDocSnap.data();
+        console.log(data);
         // Ensures correct info is the selected mentors form
-        if (data.YourEmail.toLowerCase() == mentor.email.toLowerCase() && data.menteeName.toLowerCase() == student.toLowerCase()) {
+        if (data.YourEmail.toLowerCase() == mentor.email.toLowerCase() && data.MenteeName.toLowerCase() == student.toLowerCase()) {
         //  if (data.YourEmail.toLowerCase() == mentor.email.toLowerCase()) { 
           console.log("the mentor name is ", mentor.displayName);
           console.log("the student", student);
           // most up to date form
           info = data;
           // for filename purposes
-          info["menteeName"] = info["menteeName"].replace(/\s+/g, '_');
+          info["MenteeName"] = info["MenteeName"].replace(/\s+/g, '_');
           // console.log("data!@#!@", data, "form number!", form);
-        }
+        // }
         // let thisMentor = {
         //     id: qDocSnap.id,
         //     displayName: data.displayName,
         //     email: data.email,
         //     password: data.password,
            
-        // }
+        }
     })
     console.log(info);
     // let results = {}
@@ -248,7 +249,7 @@ getStudents = async () => {
                         
                       ))}
                    </select>
-                      <CsvDownload filename={mentor.displayName + "_" + this.state.data.menteeName + "_" + form + ".csv"} data={Object.entries(this.state.data)}/>
+                      <CsvDownload filename={mentor.displayName + "_" + this.state.data.MenteeName + "_" + form + ".csv"} data={Object.entries(this.state.data)}/>
                       
                   </div>
                 </div>
