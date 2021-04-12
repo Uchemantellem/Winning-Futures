@@ -10,9 +10,12 @@ import {
   Link,
   withRouter
 } from "react-router-dom";
+import { Table } from 'react-bootstrap';
+import './style/main.css';
+import Download from './img/download.png';
 
 
-var form = "form2";
+var form = "form1";
 export class Mentors extends React.Component {
   constructor(props) {
     super(props);
@@ -26,7 +29,7 @@ export class Mentors extends React.Component {
     this.studentsRef = Firebase.firestore().collection('students');
     this.mentors = [];
     this.students =[];
-    this.form = "form2";
+    this.form = "form1";
     this.student = "";
     this.state = {
       mentors: [],
@@ -50,7 +53,7 @@ export class Mentors extends React.Component {
               displayName: data.displayName,
               email: data.email,
               password: data.password,
-             
+
           }
           this.mentors.push(thisMentor);
       })
@@ -83,7 +86,7 @@ export class Mentors extends React.Component {
       }
     }
     if (foundIndex !== -1) { // silently fail if item not found
-      this.mentors.splice(foundIndex, 1); // remove one element 
+      this.mentors.splice(foundIndex, 1); // remove one element
     }
     this.setState({mentors: this.mentors});
 
@@ -95,25 +98,24 @@ export class Mentors extends React.Component {
     var info = [];
     querySnap.forEach(async qDocSnap => {
         let data = qDocSnap.data();
-        console.log(data);
         // Ensures correct info is the selected mentors form
-        if (data.YourEmail.toLowerCase() == mentor.email.toLowerCase() && data.MenteeName.toLowerCase() == student.toLowerCase()) {
-        //  if (data.YourEmail.toLowerCase() == mentor.email.toLowerCase()) { 
+        if (data.YourEmail.toLowerCase() == mentor.email.toLowerCase() && data.menteeName.toLowerCase() == student.toLowerCase()) {
+        //  if (data.YourEmail.toLowerCase() == mentor.email.toLowerCase()) {
           console.log("the mentor name is ", mentor.displayName);
           console.log("the student", student);
           // most up to date form
           info = data;
           // for filename purposes
-          info["MenteeName"] = info["MenteeName"].replace(/\s+/g, '_');
+          info["menteeName"] = info["menteeName"].replace(/\s+/g, '_');
           // console.log("data!@#!@", data, "form number!", form);
-        // }
+        }
         // let thisMentor = {
         //     id: qDocSnap.id,
         //     displayName: data.displayName,
         //     email: data.email,
         //     password: data.password,
-           
-        }
+
+        // }
     })
     console.log(info);
     // let results = {}
@@ -149,7 +151,7 @@ export class Mentors extends React.Component {
     this.setState({data: info});
   }
 
-  onChangeValue(event) {
+  onChangeValue = (event) => {
     console.log(event.target.value);
     form = event.target.value;
     // this.form = event.target.value;
@@ -158,7 +160,7 @@ export class Mentors extends React.Component {
       form = event.target.value;
     } catch (error) {
       console.log(error);
-    } 
+    }
   }
   handleChange = (event, mentor, form) => {
     event.preventDefault();
@@ -197,64 +199,107 @@ getStudents = async () => {
   // console.log("Students data", this.students);
   this.setState({students: this.students});
 }
-  
+
 
   render() {
     // console.log(this.state);
     return (
-     
+
       <React.Fragment>
-        
+
         <div className="container">
           <div className="row">
             <div className="col-xl-12">
-              <h1>Mentors</h1>
+              <h1 className={'page-title marginL0'}>Mentors</h1>
             </div>
           </div>
           <div className="row">
             <div className="col-xl-12">
-              {this.state.mentors.map(mentor => (
-                <>
-                <div
-                //key not needed with react.fragment
-                  key={mentor.uid}
-                  className="card float-left"
-                  style={{ width: "18rem", marginRight: "1rem" }}
-                >
-                  <div className="card-body">
-                    <h5 className="card-title">Name: {mentor.displayName}</h5>
-                    <h5 className="card-title">Email: {mentor.email}</h5>
-                    <h5 className="card-title">Password: {mentor.password}</h5>
-                    {/* <h5 className="card-title">StudentCount: {mentor.session}</h5> */}
-                    <button onClick={() => this.deleteMentor(mentor)} className="btn btn-link">
-                      Delete
-                    </button>
-                      <Link to={"/AddMentors?id=" + mentor.id}>
+              <Table className={'simple-table'} >
+                <thead>
+                <tr>
+                  <th></th>
+                  <th>Forms</th>
+                  <th>Students</th>
+                  <th></th>
+                  <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {this.state.mentors.map(mentor => (
+
+                  <tr
+                    //key not needed with react.fragment
+                    key={mentor.uid}
+                    className="card float-left"
+                    style={{ width: "18rem", marginRight: "1rem" }}
+                  >
+                    {/*<div className="card-body">*/}
+                      <td className="card-title">
+                        <div><b>Name: {mentor.displayName}</b></div>
+                        <div>Email: {mentor.email}</div>
+                        <div>Password: {mentor.password}</div>
+                        </td>
+                      <td className="card-title">
+                        <select name="selectedMentor" className={'blue-select'} value={this.state.form} onChange={this.onChangeValue}>
+                          <option value="form1">Form 1</option>
+                          <option value="form2">Form 2</option>
+                          <option value="form3">Form 3</option>
+                          <option value="form4">Form 4</option>
+                          <option value="form5">Form 5</option>
+                          <option value="form6">Form 6</option>
+                          <option value="form7">Form 7</option>
+                          <option value="form8">Form 8</option>
+                        </select>
+                      </td>
+                      <td className="card-title">
+                        <select name="selectedMentor" className={'blue-select'} value={this.state.selectedMentor} onChange={(e) => this.handleChange(e, mentor, form)}>
+                          <option value="">Select Student</option>
+                          {this.students.filter(student => student.mentorKey == mentor.id).map(student => (
+                            <option key={student.key} value={student.key}>{student.firstName + " " + student.lastName}</option>
+
+                          ))}
+                        </select>
+                      </td>
+                    <td>
+                      <CsvDownload class={'download-btn'} filename={mentor.displayName + "_" + this.state.data.menteeName + "_" + form + ".csv"}
+                                   data={Object.entries(this.state.data)}><img src={Download}  /></CsvDownload>
+
+                    </td>
+                      {/* <h5 className="card-title">StudentCount: {mentor.session}</h5> */}
+                    <td className={'center-align'}>
+                      <div>
+                        <button onClick={() => this.deleteMentor(mentor)} className="btn btn-link">
+                          Delete
+                        </button>
+                      </div>
+                      <div>
+                        <Link to={"/AddMentors?id=" + mentor.id}>
                           Edit
-                      </Link>
-                    <div onChange={this.onChangeValue} >
-                      <input type = "radio" value="form1" checked={this.state.form} name="form1"/> Form 1
-                      <input type = "radio" value="form2" checked={this.state.form} name="form2"/> Form 2
-                      <input type = "radio" value="form3" checked={this.state.form} name="form3"/> Form 3
-                      <input type = "radio" value="form4" checked={this.state.form} name="form4"/> Form 4
-                      <input type = "radio" value="form5" checked={this.state.form} name="form5"/> Form 5
-                      <input type = "radio" value="form6" checked={this.state.form} name="form6"/> Form 6
-                      <input type = "radio" value="form7" checked={this.state.form} name="form7"/> Form 7
-                      <input type = "radio" value="form8" checked={this.state.form} name="form8"/> Form 8
-                    </div>
-                    <select name="selectedMentor" value={this.state.selectedMentor} onChange={(e) => this.handleChange(e, mentor, form)}>
-                      <option value="">Select Student</option>
-                      {this.students.filter(student => student.mentorKey == mentor.id).map(student => (
-                          <option key={student.key} value={student.key}>{student.firstName + " " + student.lastName}</option>
-                        
-                      ))}
-                   </select>
-                      <CsvDownload filename={mentor.displayName + "_" + this.state.data.MenteeName + "_" + form + ".csv"} data={Object.entries(this.state.data)}/>
-                      
-                  </div>
-                </div>
-                </>
-              ))}
+                        </Link>
+                      </div>
+                    </td>
+
+
+                      {/*<div onChange={this.onChangeValue} >*/}
+                      {/*<input type = "radio" value="form1" checked={this.state.form} name="form1"/> Form 1*/}
+                      {/*<input type = "radio" value="form2" checked={this.state.form} name="form2"/> Form 2*/}
+                      {/*<input type = "radio" value="form3" checked={this.state.form} name="form3"/> Form 3*/}
+                      {/*<input type = "radio" value="form4" checked={this.state.form} name="form4"/> Form 4*/}
+                      {/*<input type = "radio" value="form5" checked={this.state.form} name="form5"/> Form 5*/}
+                      {/*<input type = "radio" value="form6" checked={this.state.form} name="form6"/> Form 6*/}
+                      {/*<input type = "radio" value="form7" checked={this.state.form} name="form7"/> Form 7*/}
+                      {/*<input type = "radio" value="form8" checked={this.state.form} name="form8"/> Form 8*/}
+                      {/*</div>*/}
+
+
+                    {/*</div>*/}
+                  </tr>
+
+                ))}
+                </tbody>
+              </Table>
+
             </div>
           </div>
         </div>

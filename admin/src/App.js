@@ -5,7 +5,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  NavLink
 } from "react-router-dom";
 import {Forms} from './Forms';
 import Home from './Home';
@@ -15,6 +15,9 @@ import {Students} from './Students';
 import {Sessions} from './Sessions';
 import {AddStudent} from "./AddStudent";
 import AdminLogin from "./AdminLogin";
+import './style/main.css';
+import Icon from './img/icon.png';
+import Logout from './img/logout.png';
 
 class App extends React.Component {
   constructor(props) {
@@ -42,7 +45,9 @@ class App extends React.Component {
         }
     });
   }
-
+  onLogout() {
+    Firebase.auth().signOut();
+  }
   componentDidMount() {
       this.authListener();
   }
@@ -50,45 +55,60 @@ class App extends React.Component {
   render() {
 
     return (
-      <div>
+      <div style={{height:'100%'}}>
         {this.state.user ? (
 
     <Router>
-      <div>
-        <nav>
-          <ul>
-            {/* <li>
-              <Link to="/">AdminLogin</Link>
+      <div className={'main-page'}>
+        <div className={'left'}>
+          <div className={'box'}>
+            <img src={Icon}  />Admin
+            {/*<div className={'box-left'}></div>*/}
+            {/*<div className={'box-right'}></div>*/}
+          </div>
+          <nav>
+            <ul>
+              {/* <li>
+              <NavLink to="/">AdminLogin</NavLink>
             </li> */}
-            <li>
-              <Link to="/Home">Home</Link>
-            </li>
-            <li>
-              <Link to="/AddMentors">Add Mentors</Link>
-            </li>
-            <li>
-            <Link to="/AddStudents">Add Students</Link>
-              
-            </li>
-            <li>
-            <Link to="/Mentors">Mentors</Link>
-            </li>
-            <li>
-            <Link to="/Students">Students</Link>
-            </li>
+              {/* <li>
+                <NavLink to="/Home" activeClassName={'activeClass'} >Home</NavLink>
+              </li> */}
               <li>
-              <Link to="/Forms">Forms</Link>
+                <NavLink to="/AddMentors" activeClassName={'activeClass'}>
+                  <i className="material-icons">group_add</i>Add Mentors</NavLink>
               </li>
-          </ul>
-        </nav>
+              <li>
+                <NavLink to="/AddStudents" activeClassName={'activeClass'}><i className="material-icons">person_add</i>Add Students</NavLink>
 
-        {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
-        <Switch>
+              </li>
+              <li>
+                <NavLink to="/Mentors" activeClassName={'activeClass'}>
+                  <i className="material-icons">group</i>Mentors</NavLink>
+              </li>
+              <li>
+                <NavLink to="/Students" activeClassName={'activeClass'}>
+                  <i className="material-icons">person</i>Students</NavLink>
+              </li>
+              <li>
+                <NavLink to="/Forms" activeClassName={'activeClass'}><i className="material-icons">view_module</i>Forms</NavLink>
+              </li>
+            </ul>
+          </nav>
+          <div className={'nav-bottom'}>
+            <div className={'box'} onClick={this.onLogout}>
+              <img src={Logout} />logout
+              {/*<div className={'box-left'}></div>*/}
+              {/*<div className={'box-right'}></div>*/}
+            </div>
+          </div>
+        </div>
+        <div className={'right'}>
+          <Switch>
             <Route path="/AddStudents">
-                <AddStudent />
+              <AddStudent />
             </Route>
-           <Route path="/Forms">
+            <Route path="/Forms">
               <Forms />
             </Route>
             <Route path ="/Home">
@@ -106,11 +126,14 @@ class App extends React.Component {
             <Route path ="/Sessions">
               <Sessions/>
             </Route>
-            {/* <Route path="/AdminLogin"> 
-              <AdminLogin/>  
+            {/* <Route path="/AdminLogin">
+              <AdminLogin/>
             </Route> */}
-        </Switch>
+          </Switch>
+        </div>
       </div>
+
+
     </Router>
     ) : (<AdminLogin/>)}
     </div>

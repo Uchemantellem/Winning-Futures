@@ -8,8 +8,9 @@ import {
   Link,
   withRouter
 } from "react-router-dom";
+import './style/main.css'
 
-
+import { Table  } from 'react-bootstrap';
 
 export class Students extends React.Component {
   constructor(props) {
@@ -84,12 +85,12 @@ export class Students extends React.Component {
       }
     }
     if (foundIndex !== -1) { // silently fail if item not found
-      this.students.splice(foundIndex, 1); // remove one element 
+      this.students.splice(foundIndex, 1); // remove one element
     }
     this.setState({students: this.students});
 
   }
-  
+
   rendorMentor = (student) => {
     if (student.mentor == undefined) {
       return <h5 className="card-title">Mentor: No Mentor, Click edit to assign a Mentor</h5>
@@ -102,41 +103,63 @@ export class Students extends React.Component {
   render() {
     console.log(this.state);
     return (
-     
+
       <React.Fragment>
-        
+
         <div className="container">
           <div className="row">
             <div className="col-xl-12">
-              <h1>Students</h1>
+              <h1 className={'page-title marginL0'}>Students</h1>
             </div>
           </div>
           <div className="row">
             <div className="col-xl-12">
-              {this.state.students.map(student => (
-                <>
-                <div
-                //key not needed with react.fragment
-                  key={student.uid}
-                  className="card float-left"
-                  style={{ width: "18rem", marginRight: "1rem" }}
-                >
-                  <div className="card-body">
-                    <h5 className="card-title">First Name: {student.firstName}</h5>
-                    <h5 className="card-title">Last Name: {student.lastName}</h5>
-                    <h5 className="card-title">School: {student.school}</h5>
-                    <h5 className="card-title">Session: {student.session}</h5>
-                    {this.rendorMentor(student)}
-                    <button onClick={() => this.deleteStudent(student)} className="btn btn-link">
-                      Delete
-                    </button>
-                      <Link to={"/AddStudents?id=" + student.id}>
-                          Edit
-                      </Link>
-                  </div>
-                </div>
-                </>
-              ))}
+              <Table className={'simple-table'}>
+                <thead>
+                <tr>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>School</th>
+                  <th>Session</th>
+                  <th>Mentor</th>
+                  <th> </th>
+                </tr>
+                </thead>
+                <tbody>
+                {this.state.students.map(student => (
+                  <tr
+                    //key not needed with react.fragment
+                    key={student.id}
+                    className="card float-left"
+                    style={{ width: "18rem", marginRight: "1rem" }}
+                  >
+                    {/*<div className="card-body">*/}
+                      <td className="card-title"> {student.firstName}</td>
+                      <td className="card-title">{student.lastName}</td>
+                      <td className="card-title">{student.school}</td>
+                      <td className="card-title"> {student.session}</td>
+                      <td>{this.rendorMentor(student)}</td>
+                      <td className={'center-align'}>
+                        <div>
+                          <button onClick={() => this.deleteStudent(student)} className="btn btn-link">
+                            Delete
+                          </button>
+                        </div>
+                        <div>
+                          <Link to={"/AddStudents?id=" + student.id}>
+                            Edit
+                          </Link>
+                        </div>
+
+                      </td>
+                    {/*</div>*/}
+                  </tr>
+
+                ))}
+
+                </tbody>
+              </Table>
+
             </div>
           </div>
         </div>

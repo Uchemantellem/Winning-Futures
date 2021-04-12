@@ -1,0 +1,173 @@
+html,body,#root{
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: "PT Sans";
+    min-width: 1200px;
+}
+.row{
+  margin: 0;
+}
+.container{
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+.main-page {
+    margin: 0 auto;
+    width: 100%;
+    min-height: 100%;
+    display: flex;
+}
+.main-page .left {
+    flex: 0 0 250px; /* 左侧固定200px */
+    background: rgb(242, 242, 242);
+    position: relative;
+    min-height: 600px;
+}
+.main-page .right {
+    flex: 1; /* 随父级变化 */
+    max-height: 100vh;
+    padding: 30px;
+}
+.box {
+    margin: 0 auto;
+    width: 100%;
+    font-size: 16px;
+    padding: 40px 0 40px 20px;
+    color: #667BD1;
+    cursor: pointer;
+}
+.box img{
+    width: 18px;
+    vertical-align: middle;
+    margin-bottom: 5px;
+    margin-right: 15px;
+
+    /*margin-right: ;*/
+}
+
+nav ul{
+    list-style: none;
+    padding: 10px 0;
+    color: #667BD1;
+    font-size: 18px;
+}
+nav ul li{
+    list-style: none;
+    /* padding: 10px 0 10px 20px; */
+}
+nav ul li a{
+    color: #667BD1;
+    padding: 10px 0 10px 20px;
+    display: block;
+}
+nav ul li i{
+    font-size: 30px!important;
+    vertical-align: middle;
+    margin-bottom: 5px;
+    padding-right:15px ;
+}
+nav ul li .activeClass{
+    position: relative;
+    color: #2643BE;
+    font-weight: bold;
+}
+nav ul li a:hover,nav ul li a:active{
+    text-decoration: none;
+}
+nav ul li .activeClass:hover{
+  color: #2643BE !important;
+}
+a:hover{
+  color: #667BD1 !important;
+}
+nav ul li .activeClass::before{
+    position: absolute;
+    left: -20px;
+    top:-13px;
+    content: '';
+    width: 5px;
+    height: 53px;
+    background: #2643BE;
+    display: inline-block;
+}
+nav ul li:hover{
+  background: #E9ECF9;
+}
+
+h1.marginL0{
+  margin-left: 0;
+}
+
+.nav-bottom{
+    position: absolute;
+    bottom:20px
+}
+
+.simple-table{
+
+}
+.simple-table.table > thead > tr > th{
+    border-bottom: none;
+    color: #2643BE;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.simple-table.table > thead > tr > td,
+.simple-table.table > tbody > tr > td,
+.simple-table.table > tfoot > tr > td{
+    border-top: none;
+    border-bottom: 1px solid #ddd;
+    vertical-align: middle;
+}
+
+.page-title{
+    font-size: 22px;
+    color: #2643BE;
+    font-weight: bold;
+    margin-bottom: 30px;
+    margin-left: 15px;
+}
+
+.center-align{
+    text-align: center;
+}
+
+.blue-select{
+    background: rgb(233, 236, 249);
+    border: none;
+    padding: 3px 10px;
+    border-radius: 5px;
+}
+
+.download-btn{
+    background: #fff;
+    border: none;
+}
+
+.download-btn img{
+   width: 20px;
+}
+.save-btn{
+  text-align: right;
+}
+.save-btn span{
+  background: #2643BE;
+  margin-right: 40px;
+  font-size: 30px;
+  font-weight: bold;
+  padding: 0 30px;
+  letter-spacing: 3px;
+  border-radius: 5px;
+  box-shadow: 6px 6px 12px 0px #92a0de;
+  color: #fff;
+  cursor: pointer;
+}
+.require{
+  color: red;
+}
+
+

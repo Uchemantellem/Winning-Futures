@@ -10,7 +10,7 @@ export class Forms extends React.Component {
 
     render() {
         return (
-            <div style={{padding:40}}>
+            <div style={{height: "100%",width: "100%",overflowY: "auto"}}>
                 <Form src="https://tkjujrjyhdygpzy.form.io/successcoachform" />
             </div>
             
