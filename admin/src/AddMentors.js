@@ -30,17 +30,33 @@ export class AddMentors extends React.Component {
 
   componentDidMount() {
     this.getUserData();
+
+    let params = new URLSearchParams(window.location.search); // TODO: FIND A BETTER WAY TO DO THIS
+    let mentorKey = params.get("id");
+    if (mentorKey) {
+      this.getMentorByKey(mentorKey);
+    }
   }
 
-  writeMentorData = async (displayName, email, password) => {
-    let newMentor = {
-      displayName: displayName,
-      email: email,
-      password: password
-    };
-    let newMentorDocRef = await this.mentorRef.add(newMentor);
-    //newMentor.key = newMentorDocRef.id;
-    return newMentor
+  writeMentorData = async (mentorKey, displayName, email, password) => {
+
+    if (mentorKey) {
+      this.mentorRef.doc(mentorKey).set({
+        displayName: displayName,
+        email: email,
+        password: password
+      })
+    } else
+    {
+      let newMentor = {
+        displayName: displayName,
+        email: email,
+        password: password
+      };
+      let newMentorDocRef = await this.mentorRef.add(newMentor);
+      newMentor.key = newMentorDocRef.id;
+      return newMentor
+    }
   };
 
   getUserData = async () => {
@@ -58,18 +74,20 @@ export class AddMentors extends React.Component {
 
   handleSubmit = event => {
     event.preventDefault();
+    let mentorKey = this.state.mentorKey;
     let displayName = this.state.displayName;
     let email = this.state.email;
     let password = this.state.password;
 
 
-    this.writeMentorData(displayName, email, password);
-    console.log("submitted", displayName, email, password);
+    this.writeMentorData(mentorKey, displayName, email, password);
+    console.log("submitted", mentorKey, displayName, email, password);
 
     this.setState({
       displayName: "",
       email: "",
-      password: ""
+      password: "",
+      mentorKey: ""
     });
   };
 
@@ -88,6 +106,26 @@ export class AddMentors extends React.Component {
       });
   };
 
+  getMentorByKey = async (mentorKey) => {
+    let querySnap = await this.mentorRef.get();
+    querySnap.forEach(qDocSnap => {
+          let mentorData = qDocSnap.data();
+          if (qDocSnap.id === mentorKey) {
+
+            this.setState(
+                {
+                  displayName: mentorData.displayName,
+                  email: mentorData.email,
+                  password: mentorData.password,
+                  mentorKey: mentorKey
+
+                }
+            )
+          }
+        }
+    )
+  }
+
 
   render() {
     const { developers } = this.state;
@@ -100,7 +138,7 @@ export class AddMentors extends React.Component {
         <div className="container">
           <div className="row">
             <div className="col-xl-12">
-              <h1 className="page-title">Create a mentor</h1>
+              <h1 className="page-title">{this.state.mentorKey ? "Edit" : "Add New" } Mentor Here</h1>
             </div>
           </div>
           <div className="row">
