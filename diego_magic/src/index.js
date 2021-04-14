@@ -76,6 +76,11 @@ window.onload = async function () {
                 firebase.firestore().collection(jsonFile.name).add(submission.data).catch(err => {
                     console.log(err);
                 })
+
+                // save to listofforms db
+                firebase.firestore().collection("listofforms").add(jsonFile.name).catch(err => {
+                    console.log(err);
+                })
             });
         }).catch(error => {
             console.log(error);
