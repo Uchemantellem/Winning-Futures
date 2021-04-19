@@ -141,7 +141,7 @@ export class AddMentors extends React.Component {
               <h1 className="page-title">{this.state.mentorKey ? "Edit" : "Add New" } Mentor Here</h1>
             </div>
           </div>
-          <div className="row">
+          {/* <div className="row">
             <div className="col-xl-12">
             {
               this.mentors.length ? <Table className={'simple-table'}>
@@ -166,11 +166,10 @@ export class AddMentors extends React.Component {
             </Table>:null
             }
             </div>
-          </div>
+          </div> */}
           
           <div className="row">
             <div className="col-xl-12">
-              <h1 className="page-title">Add new mentor here</h1>
               <div className='save-btn'>
                 <span onClick={this.handleSubmit}>
                   SAVE
