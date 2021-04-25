@@ -91,7 +91,7 @@ class App extends React.Component {
                   <i className="material-icons">person</i>Students</NavLink>
               </li>
               <li>
-                <NavLink to="/Forms" activeClassName={'activeClass'}><i className="material-icons">view_module</i>Forms</NavLink>
+                <a href="https://portal.form.io/#/auth" activeClassName={'activeClass'}><i className="material-icons">view_module</i>Forms</a>
               </li>
             </ul>
           </nav>
