@@ -152,18 +152,26 @@ export class HomeScreen extends React.Component {
   render() {
       if (this.state.studentList.length > 0) {
         return (
-          <View style = {homeStyles.container}>
+
+        <View style= {homeStyles.container}>
+          
+          <TouchableOpacity style= {{display:'flex', flexDirection: "row", alignItems: "center", justifyContent: 'flex-end', paddingRight: 18}}
+          onPress= {()=> this.props.navigation.navigate('Login')}> 
+          <Text style = {{color: "#2643BE" }}> Logout </Text>
+          <Ionicons name="log-out-outline" size={22} color="#2643BE" /> 
+          </TouchableOpacity>   
+          
             <View style = {homeStyles.headerContainer}>
-              <Text style = {{fontSize: 30, color: "#667BD1" }}>Welcome back, {this.self.displayName}</Text>
+            
+
+            
+            <Text style = {{fontSize: 30, color: "#667BD1" , marginTop: 10}}>Welcome back, {this.self.displayName}</Text>
+                
             </View>
+
             <View style = {homeStyles.listContainer}>
               <FlatList
-              // try to think of logic if user doesn't have any circuits
-              // ItemSeparatorComponent={()=>{
-              //   return (
-              //     <View style={homeStyles.separator}/>
-              //   );
-              // }}
+            
                 data={this.state.studentList ? this.state.studentList : []}
                 renderItem={({item})=>{
                   return(
@@ -207,6 +215,7 @@ export class HomeScreen extends React.Component {
               />
             </View>
           </View>
+    
   
         )
     }
