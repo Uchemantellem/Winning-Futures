@@ -76,6 +76,7 @@ window.onload = async function () {
                 firebase.firestore().collection(jsonFile.name).add(submission.data).catch(err => {
                     console.log(err);
                 })
+
             });
         }).catch(error => {
             console.log(error);
@@ -86,8 +87,10 @@ window.onload = async function () {
     let buttonsDiv = document.getElementById("buttons");
 
     let forms = await loadJson(formsUrl);
+    let formNames = [];
     forms.forEach(form => {
         if (form.type === "form") {
+            formNames.push(form.name);
             let button = document.createElement("button");
             button.style.marginTop = "18px";
             button.style.height = "60px";
@@ -105,6 +108,11 @@ window.onload = async function () {
             buttonsDiv.appendChild(button);
         }
     });
+
+    // save to listofforms db
+    firebase.firestore().collection("formInfo").doc("formNames").set({names:formNames}).catch(err => {
+        console.log(err);
+    })
 
     // For testing: logic to enable/disable network for firebase db
     // let network = document.getElementById("toggleNetwork");

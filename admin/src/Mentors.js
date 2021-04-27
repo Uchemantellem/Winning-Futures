@@ -14,8 +14,6 @@ import { Table } from 'react-bootstrap';
 import './style/main.css';
 import Download from './img/download.png';
 
-
-var form = "form1";
 export class Mentors extends React.Component {
   constructor(props) {
     super(props);
@@ -27,14 +25,18 @@ export class Mentors extends React.Component {
    }
     this.mentorsRef = Firebase.firestore().collection('mentors');
     this.studentsRef = Firebase.firestore().collection('students');
+    this.formsRef = Firebase.firestore().collection("formInfo");
+    this.forms = [];
     this.mentors = [];
     this.students =[];
-    this.form = "form1";
     this.student = "";
+    this.selectedform = '';
     this.state = {
       mentors: [],
       data: [],
       students: [],
+      forms: [],
+      form: '',
     };
 
   }
@@ -42,7 +44,20 @@ export class Mentors extends React.Component {
   componentDidMount() {
     this.getMentors();
     this.getStudents();
+    this.getForms();
   };
+
+  getForms = async () => {
+    let querySnap = await this.formsRef.get();
+    querySnap.forEach(async qDocSnap => {
+      let data = qDocSnap.data();
+      // console.log("this is data form, ",data);
+      for (let i = 0; i < data.names.length; i++) {
+        this.forms.push(data.names[i]);
+      }
+    })
+    this.setState({forms: this.forms});
+  }
 
   getMentors = async () => {
       let querySnap = await this.mentorsRef.get();
@@ -92,32 +107,53 @@ export class Mentors extends React.Component {
 
   }
 
-  renderMentorStudentForms = async (mentor, form, student) => {
-    let formsRef = Firebase.firestore().collection(form);
+
+
+  onChangeValue = (event) => {
+    this.selectedform = event.target.value;
+    console.log(this.selectedform);
+    this.setState({form: this.selectedform});
+
+  }
+  handleChange = async (event, mentor, formz) => {
+    event.preventDefault();
+    let target = event.target;
+    let value = target.value;
+    let name = target.name;
+
+    // console.log(name);
+
+    this.setState(
+        {
+            [name]: value
+        });
+    let formsRef = Firebase.firestore().collection(formz);
     let querySnap = await formsRef.get();
     var info = [];
     querySnap.forEach(async qDocSnap => {
         let data = qDocSnap.data();
-        // Ensures correct info is the selected mentors form
-        if (data.YourEmail.toLowerCase() == mentor.email.toLowerCase() && data.menteeName.toLowerCase() == student.toLowerCase()) {
-        //  if (data.YourEmail.toLowerCase() == mentor.email.toLowerCase()) {
-          console.log("the mentor name is ", mentor.displayName);
-          console.log("the student", student);
-          // most up to date form
-          info = data;
-          // for filename purposes
-          info["menteeName"] = info["menteeName"].replace(/\s+/g, '_');
-          // console.log("data!@#!@", data, "form number!", form);
-        }
-        // let thisMentor = {
-        //     id: qDocSnap.id,
-        //     displayName: data.displayName,
-        //     email: data.email,
-        //     password: data.password,
+        // if (Object.keys(data).length != 0) {
+          // Ensures correct info is the selected mentors form
+          if (data.YourEmail.toLowerCase() == mentor.email.toLowerCase() && data.MenteeName.toLowerCase() == value.toLowerCase()) {
+          //  if (data.YourEmail.toLowerCase() == mentor.email.toLowerCase()) {
+            console.log("the mentor name is ", mentor.displayName);
+            console.log("the student", value);
+            // most up to date form
+            info = data;
+            // for filename purposes
+            info["MenteeName"] = info["MenteeName"].replace(/\s+/g, '_');
+            // console.log("data!@#!@", data, "form number!", form);
+          }
+          // let thisMentor = {
+          //     id: qDocSnap.id,
+          //     displayName: data.displayName,
+          //     email: data.email,
+          //     password: data.password,
 
         // }
-    })
-    console.log(info);
+          // }
+    });
+    console.log("Exported Info", info);
     // let results = {}
     // for (let d in info) {
     //  console.log(info[d]);
@@ -149,42 +185,13 @@ export class Mentors extends React.Component {
     //  results["videoCall"] = typeof info[d]["videoCall"] !== "undefined" ? info[d]["videoCall"] : info[d];
     // }
     this.setState({data: info});
-  }
-
-  onChangeValue = (event) => {
-    console.log(event.target.value);
-    form = event.target.value;
-    // this.form = event.target.value;
-    try {
-      this.setState({form: event.target.value});
-      form = event.target.value;
-    } catch (error) {
-      console.log(error);
-    }
-  }
-  handleChange = (event, mentor, form) => {
-    event.preventDefault();
-    let target = event.target;
-    let value = target.value;
-    let name = target.name;
-
-    console.log(value);
-    console.log(form);
-
-    // console.log(name);
-
-    this.setState(
-        {
-            [name]: value
-        });
-  this.renderMentorStudentForms(mentor, form, value);
 };
 
-  getMentorByKey = (mentorKey) => {
-    for (const mentor of this.mentors) {
-        if (mentor.key === mentorKey) {
-            return mentor;
-        }
+getMentorByKey = (mentorKey) => {
+  for (const mentor of this.mentors) {
+      if (mentor.key === mentorKey) {
+          return mentor;
+      }
     }
 }
 
@@ -241,19 +248,14 @@ getStudents = async () => {
                         <div>Password: {mentor.password}</div>
                         </td>
                       <td className="card-title">
-                        <select name="selectedMentor" className={'blue-select'} value={this.state.form} onChange={this.onChangeValue}>
-                          <option value="form1">Form 1</option>
-                          <option value="form2">Form 2</option>
-                          <option value="form3">Form 3</option>
-                          <option value="form4">Form 4</option>
-                          <option value="form5">Form 5</option>
-                          <option value="form6">Form 6</option>
-                          <option value="form7">Form 7</option>
-                          <option value="form8">Form 8</option>
+                        <select name="selectedForm" className={'blue-select'} value={this.state.form} onChange={this.onChangeValue}>
+                          {this.state.forms.map(form => (
+                            <option value={form}>{form}</option>
+                          ))}
                         </select>
                       </td>
                       <td className="card-title">
-                        <select name="selectedMentor" className={'blue-select'} value={this.state.selectedMentor} onChange={(e) => this.handleChange(e, mentor, form)}>
+                        <select name="selectedStudent" className={'blue-select'} onChange={(e) => this.handleChange(e, mentor, this.state.form)}>
                           <option value="">Select Student</option>
                           {this.students.filter(student => student.mentorKey == mentor.id).map(student => (
                             <option key={student.key} value={student.key}>{student.firstName + " " + student.lastName}</option>
@@ -262,8 +264,8 @@ getStudents = async () => {
                         </select>
                       </td>
                     <td>
-                      <CsvDownload class={'download-btn'} filename={mentor.displayName + "_" + this.state.data.menteeName + "_" + form + ".csv"}
-                                   data={Object.entries(this.state.data)}><img src={Download}  /></CsvDownload>
+                      <CsvDownload class={'download-btn'} filename={mentor.displayName + "_" + this.state.data.MenteeName + "_" + this.state.form + ".csv"}
+                        data={Object.entries(this.state.data)}><img src={Download}  /></CsvDownload>
 
                     </td>
                       {/* <h5 className="card-title">StudentCount: {mentor.session}</h5> */}
@@ -280,20 +282,6 @@ getStudents = async () => {
                       </div>
                     </td>
 
-
-                      {/*<div onChange={this.onChangeValue} >*/}
-                      {/*<input type = "radio" value="form1" checked={this.state.form} name="form1"/> Form 1*/}
-                      {/*<input type = "radio" value="form2" checked={this.state.form} name="form2"/> Form 2*/}
-                      {/*<input type = "radio" value="form3" checked={this.state.form} name="form3"/> Form 3*/}
-                      {/*<input type = "radio" value="form4" checked={this.state.form} name="form4"/> Form 4*/}
-                      {/*<input type = "radio" value="form5" checked={this.state.form} name="form5"/> Form 5*/}
-                      {/*<input type = "radio" value="form6" checked={this.state.form} name="form6"/> Form 6*/}
-                      {/*<input type = "radio" value="form7" checked={this.state.form} name="form7"/> Form 7*/}
-                      {/*<input type = "radio" value="form8" checked={this.state.form} name="form8"/> Form 8*/}
-                      {/*</div>*/}
-
-
-                    {/*</div>*/}
                   </tr>
 
                 ))}

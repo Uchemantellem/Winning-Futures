@@ -135,7 +135,6 @@ export const homeStyles = StyleSheet.create({
     flex: 1,
     // backgroundColor: 'yellow',
     backgroundColor: 'white',
-    alignItems: 'center',
     justifyContent: 'center',
     paddingTop: 20
   },
@@ -208,7 +207,6 @@ export const homeStyles = StyleSheet.create({
     borderColor: "black",
     borderRadius: 2,
     backgroundColor:"white",
-    padding: 10,
     paddingLeft: 15,
     margin: 10,
     paddingBottom: 10,

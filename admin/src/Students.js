@@ -23,11 +23,13 @@ export class Students extends React.Component {
    }
     this.mentorsRef = Firebase.firestore().collection('mentors');
     this.studentsRef = Firebase.firestore().collection('students');
-
+    // this.formsRef = Firebase.firestore().collection("formInfo");
+    // this.forms = [];
     this.mentors = [];
     this.students = [];
     this.state = {
-      students: []
+      students: [],
+      // forms: []
     };
 
   }
@@ -91,6 +93,7 @@ export class Students extends React.Component {
 
   }
 
+
   rendorMentor = (student) => {
     if (student.mentor == undefined) {
       return <h5 className="card-title">Mentor: No Mentor, Click edit to assign a Mentor</h5>
@@ -99,6 +102,29 @@ export class Students extends React.Component {
       return <h5 className="card-title">Mentor: {student.mentor.displayName}</h5>
     }
   }
+  //getForms = async () => {
+    //   let querySnap = await this.formsRef.get();
+    //   querySnap.forEach(async qDocSnap => {
+    //     let data = qDocSnap.data();
+    //     // console.log("this is data form, ",data);
+    //     for (let i = 0; i < data.names.length; i++) {
+    //       this.forms.push(data.names[i]);
+    //     }
+    //   })
+    //   this.setState({forms: this.forms});
+    // }
+  // absent checker logic for more than 2 absenses
+  // absentCheck = async () => {
+  //   this.getForms();
+  //   let formsRef = Firebase.firestore().collection(formz);
+  //   let querySnap = await formsRef.get();
+  //   if (1==1) {
+  //     return <td className="card-title" style={{color: "green"}}>NO</td>
+  //   }
+  //   else {
+  //     return <td className="card-title" style={{color: "red"}}>YES</td>
+  //   }
+  // }
 
   render() {
     console.log(this.state);
@@ -121,6 +147,7 @@ export class Students extends React.Component {
                   <th>Last Name</th>
                   <th>School</th>
                   <th>Session</th>
+                  {/* <th>Absence</th> */}
                   <th>Mentor</th>
                   <th> </th>
                 </tr>
@@ -138,6 +165,7 @@ export class Students extends React.Component {
                       <td className="card-title">{student.lastName}</td>
                       <td className="card-title">{student.school}</td>
                       <td className="card-title"> {student.session}</td>
+                      {/* <td className="card-title">{this.absentCheck()}</td> */}
                       <td>{this.rendorMentor(student)}</td>
                       <td className={'center-align'}>
                         <div>
