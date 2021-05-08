@@ -1,0 +1,31 @@
+{
+  "files": {
+    "main.css": "/static/css/main.63105203.chunk.css",
+    "main.js": "/static/js/main.4ce6a5d6.chunk.js",
+    "main.js.map": "/static/js/main.4ce6a5d6.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.61ede35b.js",
+    "runtime-main.js.map": "/static/js/runtime-main.61ede35b.js.map",
+    "static/css/2.13398ca4.chunk.css": "/static/css/2.13398ca4.chunk.css",
+    "static/js/2.80c4c9e8.chunk.js": "/static/js/2.80c4c9e8.chunk.js",
+    "static/js/2.80c4c9e8.chunk.js.map": "/static/js/2.80c4c9e8.chunk.js.map",
+    "static/js/3.71c2395f.chunk.js": "/static/js/3.71c2395f.chunk.js",
+    "static/js/3.71c2395f.chunk.js.map": "/static/js/3.71c2395f.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/2.13398ca4.chunk.css.map": "/static/css/2.13398ca4.chunk.css.map",
+    "static/css/main.63105203.chunk.css.map": "/static/css/main.63105203.chunk.css.map",
+    "static/js/2.80c4c9e8.chunk.js.LICENSE.txt": "/static/js/2.80c4c9e8.chunk.js.LICENSE.txt",
+    "static/media/banner1.a8e9343f.jpg": "/static/media/banner1.a8e9343f.jpg",
+    "static/media/banner2.17316011.jpg": "/static/media/banner2.17316011.jpg",
+    "static/media/banner3.c7fd0569.jpg": "/static/media/banner3.c7fd0569.jpg",
+    "static/media/formio.full.css": "/static/media/fontawesome-webfont.f691f37e.woff",
+    "static/media/bootstrap.css": "/static/media/glyphicons-halflings-regular.be810be3.woff2",
+    "static/media/logo.jpg": "/static/media/logo.7bf3e558.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.61ede35b.js",
+    "static/css/2.13398ca4.chunk.css",
+    "static/js/2.80c4c9e8.chunk.js",
+    "static/css/main.63105203.chunk.css",
+    "static/js/main.4ce6a5d6.chunk.js"
+  ]
+}
